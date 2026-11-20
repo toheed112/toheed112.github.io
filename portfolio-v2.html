@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mohd Toheed Mehmood – AI agents and automation</title>
+<meta name="description" content="Portfolio of Mohd Toheed Mehmood: multi-LLM RAG agents, workflow automation and data dashboards.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+@property --a{syntax:'<angle>';initial-value:0deg;inherits:false}
+:root{
+color-scheme:light dark;
+--bg:light-dark(#F5F4EF,#0C0D12);--ink:light-dark(#12131A,#EDEDF2);--mut:light-dark(#5C5F6E,#9A9DAF);
+--line:light-dark(#D9D7CE,#262836);--card:light-dark(#FFFFFF,#151722);--acc:light-dark(#1F6B5A,#6FD3B5);
+--hero:#16302B;--hero-ink:#F4F1EA;--hot:#D9B26F;
+--disp:'Unbounded','Arial Black',sans-serif;--body:'Hanken Grotesk',system-ui,sans-serif;
+interpolate-size:allow-keywords;box-sizing:border-box;
+padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root[data-theme="light"]{color-scheme:light}
+:root[data-theme="dark"]{color-scheme:dark}
+html{scroll-behavior:smooth;scroll-padding-top:env(safe-area-inset-top,0px);background:var(--bg)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 1.0625rem/1.65 var(--body);-webkit-font-smoothing:antialiased}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--hot);outline-offset:3px;border-radius:4px}
+h1,h2,h3{font-family:var(--disp);margin:0;line-height:1.08;letter-spacing:-.03em;text-wrap:balance}
+p{text-wrap:pretty}
+.wrap{max-width:1120px;margin:0 auto;padding:0 clamp(1.1rem,4vw,2rem)}
+.prog{position:fixed;left:0;right:0;top:env(safe-area-inset-top,0px);height:4px;background:var(--hot);transform:scaleX(0);transform-origin:left;z-index:9}
+@keyframes prog{to{transform:scaleX(1)}}
+@supports (animation-timeline:scroll()){.prog{animation:prog linear both;animation-timeline:scroll()}}
+
+/* hero */
+.hero{background:var(--hero);color:var(--hero-ink);padding-bottom:clamp(3rem,8vw,6rem)}
+.bar{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1.3rem 0;font-weight:500}
+.bar nav{display:flex;gap:1.3rem;align-items:center;flex-wrap:wrap}
+.bar a{text-decoration:none;opacity:.85}.bar a:hover{opacity:1;text-decoration:underline;text-underline-offset:5px}
+.bar b{font-family:var(--disp);font-size:.95rem;font-weight:700}
+#theme{background:none;border:1.5px solid currentColor;color:inherit;border-radius:999px;padding:.3rem .8rem;font:500 .88rem var(--body);cursor:pointer}
+.pill{display:inline-block;margin:clamp(1.5rem,5vw,3.5rem) 0 1.4rem;padding:.4rem 1rem;border-radius:999px;font-size:.92rem;font-weight:600;border:2px solid transparent;
+background:linear-gradient(var(--hero),var(--hero)) padding-box,conic-gradient(from var(--a),var(--hot),transparent 35%,var(--hot)) border-box;animation:spin 4s linear infinite}
+@keyframes spin{to{--a:360deg}}
+.hgrid{display:grid;gap:2.5rem;grid-template-columns:1.15fr 1fr;align-items:end}
+h1{font-size:clamp(2.2rem,5.6vw,4.7rem);font-weight:700}
+h1 .w{display:inline-block;overflow:clip;vertical-align:top;padding-bottom:.12em}
+h1 .w i{display:inline-block;font-style:normal;animation:rise .9s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--i)*.12s)}
+h1 em{font-style:normal;color:var(--hot)}
+@keyframes rise{from{transform:translateY(110%)}}
+.lede{max-width:50ch;font-size:1.15rem;margin:1.6rem 0 1.8rem;opacity:.92}
+.btns{display:flex;flex-wrap:wrap;gap:.8rem}
+.btn{display:inline-block;padding:.85rem 1.4rem;border-radius:12px;font-weight:600;text-decoration:none;border:2px solid var(--hero-ink);transition:transform .2s,background .2s}
+.btn.p{background:var(--hot);border-color:var(--hot);color:#12131A}
+.btn:hover{transform:translate(-3px,-3px);box-shadow:4px 4px 0 var(--hero-ink)}
+.btn.p:hover{box-shadow:4px 4px 0 #12131A}
+.trace{background:#0C0D12;color:#EDEDF2;border-radius:18px;padding:1.2rem 1.3rem 1.3rem;box-shadow:10px 10px 0 rgba(0,0,0,.28)}
+.trace header{display:flex;justify-content:space-between;gap:1rem;font-size:.85rem;color:#9A9DAF;margin-bottom:.9rem}
+.trace .q{color:#EDEDF2;font-weight:600;font-size:.95rem;margin:0 0 1rem}
+.row{display:grid;grid-template-columns:5.2rem 1fr 3.2rem;gap:.7rem;align-items:center;font-size:.88rem;margin:.55rem 0}
+.row span:last-child{text-align:right;color:#9A9DAF;font-variant-numeric:tabular-nums}
+.trk{height:14px;position:relative;background:#1B1D29;border-radius:5px;overflow:hidden}
+.trk i{position:absolute;top:0;bottom:0;left:var(--s);width:var(--w);border-radius:5px;background:var(--hot);transform:scaleX(0);transform-origin:left;animation:fill 9s ease-out infinite;animation-delay:calc(var(--n)*.9s)}
+.trk i.v{background:#7FC8AE}
+@keyframes fill{0%{transform:scaleX(0)}9%,88%{transform:scaleX(1)}100%{transform:scaleX(0)}}
+.trace small{display:block;margin-top:.9rem;color:#9A9DAF}
+@media (max-width:860px){.hgrid{grid-template-columns:1fr}}
+
+/* reveal on scroll (progressive) */
+@keyframes rv{from{opacity:0;transform:translateY(46px)}}
+@supports (animation-timeline:view()){.rv{animation:rv linear both;animation-timeline:view();animation-range:entry 0% cover 26%}}
+
+section{padding:clamp(3rem,8vw,6rem) 0;border-bottom:1px solid var(--line)}
+h2{font-size:clamp(1.7rem,4vw,2.8rem);font-weight:700;margin-bottom:.8rem}
+.sub{color:var(--mut);max-width:58ch;margin:0 0 2rem}
+
+/* work */
+.list details{border-top:1px solid var(--line);transition:opacity .25s}
+.list details:last-child{border-bottom:1px solid var(--line)}
+.list:has(summary:hover) details:not(:hover){opacity:.4}
+summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:1fr auto;gap:.3rem 1.2rem;align-items:center;padding:1.5rem .2rem}
+summary::-webkit-details-marker{display:none}
+summary h3{font-size:clamp(1.25rem,3vw,2.1rem);font-weight:500;transition:transform .3s,color .3s}
+summary:hover h3{transform:translateX(10px);color:var(--acc)}
+summary .one{grid-column:1;color:var(--mut)}
+summary .k{grid-column:2;grid-row:1/3;font-weight:600;border:1.5px solid var(--ink);border-radius:999px;padding:.25rem .85rem;font-size:.86rem;white-space:nowrap}
+details::details-content{block-size:0;overflow:clip;transition:block-size .4s ease,content-visibility .4s allow-discrete}
+details[open]::details-content{block-size:auto}
+.body{padding:0 .2rem 1.8rem;max-width:70ch}
+.body ul{margin:.2rem 0 1rem;padding-left:1.2rem}.body li{margin:.4rem 0}
+.tags{display:flex;flex-wrap:wrap;gap:.45rem;padding:0;list-style:none;margin:.4rem 0 1rem}
+.tags li{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:.12rem .75rem;font-size:.88rem;margin:0}
+.lk a{margin-right:1.3rem;font-weight:600;color:var(--acc);text-underline-offset:4px}
+
+/* services */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1rem}
+.svc{position:relative;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:1.6rem;overflow:hidden;--x:50%;--y:0%}
+.svc::before{content:"";position:absolute;inset:0;background:radial-gradient(240px circle at var(--x) var(--y),color-mix(in srgb,var(--acc) 22%,transparent),transparent 70%);opacity:0;transition:opacity .3s}
+.svc:hover::before{opacity:1}
+.svc>*{position:relative}
+.svc h3{font-size:1.1rem;font-weight:500;margin-bottom:.6rem}.svc p{margin:0;color:var(--mut);font-size:.98rem}
+
+/* marquee */
+.mq{overflow:hidden;border-block:1px solid var(--line);padding:1.1rem 0;mask:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.mq div{display:flex;gap:2.4rem;width:max-content;font:500 1.5rem var(--disp);letter-spacing:-.02em;animation:mq 32s linear infinite}
+.mq:hover div{animation-play-state:paused}
+@keyframes mq{to{transform:translateX(-50%)}}
+
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2.4rem}
+.two h3{font-size:1.1rem;font-weight:500;margin-bottom:.8rem}
+dt{font-weight:600}dd{margin:0 0 1rem;color:var(--mut)}
+
+.big{display:inline-block;font:700 clamp(1.3rem,4.6vw,3.2rem) var(--disp);letter-spacing:-.03em;text-decoration:none;word-break:break-word;background:linear-gradient(var(--hot),var(--hot)) 0 100%/0 .18em no-repeat;transition:background-size .4s}
+.big:hover{background-size:100% .18em}
+footer{padding:2rem 0 3rem;color:var(--mut);font-size:.92rem}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}html{scroll-behavior:auto}.trk i{transform:none}.prog{display:none}}
+</style>
+</head>
+<body>
+<div class="prog" aria-hidden="true"></div>
+<div class="hero">
+<div class="wrap">
+  <div class="bar"><b>Toheed Mehmood</b>
+    <nav aria-label="Primary"><a href="#work">Work</a><a href="#services">Services</a><a href="#about">Background</a><a href="#contact">Contact</a><button id="theme" type="button" aria-label="Switch colour theme">Theme</button></nav>
+  </div>
+  <span class="pill">Open to freelance work and full-time roles</span>
+  <div class="hgrid">
+    <div>
+      <h1 aria-label="AI agents that finish the job.">
+        <span class="w" aria-hidden="true"><i style="--i:0">AI</i></span>
+        <span class="w" aria-hidden="true"><i style="--i:1"><em>agents</em></i></span>
+        <span class="w" aria-hidden="true"><i style="--i:2">that</i></span>
+        <span class="w" aria-hidden="true"><i style="--i:3">finish</i></span>
+        <span class="w" aria-hidden="true"><i style="--i:4">the</i></span>
+        <span class="w" aria-hidden="true"><i style="--i:5">job.</i></span>
+      </h1>
+      <p class="lede">I’m Mohd Toheed Mehmood, a computer science graduate from Bhopal. I build multi-LLM assistants and automated workflows that check their own work, and I turn messy sales data into dashboards people use.</p>
+      <div class="btns"><a class="btn p" href="#work">See my work</a><a class="btn" href="mailto:mtoheed727@gmail.com">Email me</a></div>
+    </div>
+    <div class="trace" role="img" aria-label="Animated trace of my booking agent handling one request in five steps">
+      <header><span>booking-agent run</span><span>illustrative timings</span></header>
+      <p class="q">“Book a flight from Delhi to Bangalore on Friday.”</p>
+      <div class="row"><span>classify</span><div class="trk"><i style="--s:0%;--w:12%;--n:0"></i></div><span>180ms</span></div>
+      <div class="row"><span>retrieve</span><div class="trk"><i style="--s:12%;--w:20%;--n:1"></i></div><span>260ms</span></div>
+      <div class="row"><span>generate</span><div class="trk"><i style="--s:32%;--w:40%;--n:2"></i></div><span>620ms</span></div>
+      <div class="row"><span>verify</span><div class="trk"><i class="v" style="--s:72%;--w:20%;--n:3"></i></div><span>410ms</span></div>
+      <div class="row"><span>confirm</span><div class="trk"><i style="--s:92%;--w:8%;--n:4"></i></div><span>90ms</span></div>
+      <small>OpenAI classifies, FAISS retrieves, local Ollama writes, Gemini verifies, then the booking is saved.</small>
+    </div>
+  </div>
+</div>
+</div>
+
+<main class="wrap">
+<section id="work">
+  <h2 class="rv">Selected work</h2>
+  <p class="sub rv">One problem each. Click a row to open it.</p>
+  <div class="list rv">
+  <details name="proj" open>
+    <summary><h3>Autonomous booking agent</h3><span class="one">A multi-LLM assistant for flights, hotels, car rentals and excursions.</span><span class="k">ET Hackathon semi-finalist</span></summary>
+    <div class="body">
+      <ul>
+        <li>Five-step pipeline: classify, retrieve, generate, verify, confirm. It keeps context across multi-turn conversations.</li>
+        <li>OpenAI handles intent and embeddings, a local Ollama model writes the replies to cut token costs, and Gemini can verify accuracy.</li>
+        <li>FAISS semantic search over service rules and FAQs. Booking logic creates confirmation IDs, IATA codes, timestamps and fares from structured JSON.</li>
+        <li>Prompts keep answers strictly inside the service data. Streamlit interface.</li>
+      </ul>
+      <ul class="tags"><li>Python</li><li>RAG</li><li>FAISS</li><li>Ollama</li><li>OpenAI</li><li>Gemini</li><li>Streamlit</li></ul>
+      <div class="lk"><a href="https://github.com/toheed112/Autonomus-Booking-agent">Source code</a><a href="https://drive.google.com/file/d/1T3f2JA7V8dIHU3HtJavFpWL2Tc1Zaa0P/view?usp=drivesdk">Demo video</a></div>
+    </div>
+  </details>
+  <details name="proj">
+    <summary><h3>Sales analytics dashboard</h3><span class="one">Four years of sales data in one interactive view.</span><span class="k">150,000+ transactions</span></summary>
+    <div class="body">
+      <ul>
+        <li>SQL for analysis and Power BI for ETL and visualisation, cutting manual analysis time by 80%.</li>
+        <li>Revenue tracking, product and market breakdowns, and year and month filters.</li>
+        <li>Built as the capstone of my Wipro TalentNext data science training.</li>
+      </ul>
+      <ul class="tags"><li>SQL</li><li>MySQL</li><li>Power BI</li></ul>
+      <div class="lk"><a href="https://github.com/toheed112/PowerBI-sales-dashboard">Source code</a></div>
+    </div>
+  </details>
+  <details name="proj">
+    <summary><h3>Media Culture review platform</h3><span class="one">A web app for reviewing and rating movies and TV shows.</span><span class="k">Full stack</span></summary>
+    <div class="body">
+      <ul>
+        <li>Spring Boot backend with MongoDB Atlas storage.</li>
+        <li>React front end that shows movie ratings from an external API, with search.</li>
+      </ul>
+      <ul class="tags"><li>Java</li><li>Spring Boot</li><li>MongoDB</li><li>React</li></ul>
+      <div class="lk"><a href="https://github.com/toheed112/Movie-Review-Rating-Platform">Backend</a><a href="https://github.com/toheed112/movie-rate-web">Front end</a></div>
+    </div>
+  </details>
+  </div>
+</section>
+
+<section id="services">
+  <h2 class="rv">How I can help</h2>
+  <p class="sub rv">Small, clear jobs first. If it goes well, we build the next piece.</p>
+  <div class="cards rv">
+    <div class="svc"><h3>AI chatbots and assistants</h3><p>Support, booking and FAQ bots grounded in your documents, with answers kept inside your rules.</p></div>
+    <div class="svc"><h3>Workflow automation</h3><p>Forms, messages, sheets and databases connected so repetitive tasks run without anyone touching them.</p></div>
+    <div class="svc"><h3>Debugging LLM apps</h3><p>Wrong RAG answers, flaky agents, crashing Streamlit apps and runaway token costs, diagnosed and fixed with a short write-up.</p></div>
+    <div class="svc"><h3>Dashboards and data cleanup</h3><p>SQL queries and Power BI reports that turn raw sales or operations data into clear numbers.</p></div>
+  </div>
+</section>
+
+<div class="mq" aria-label="Tools I use"><div id="mq"><span>Python</span><span>SQL</span><span>Java</span><span>Spring Boot</span><span>LangChain</span><span>LangGraph</span><span>FAISS</span><span>Ollama</span><span>OpenAI API</span><span>Gemini</span><span>Power BI</span><span>Git</span></div></div>
+
+<section id="about">
+  <h2 class="rv">Background</h2>
+  <div class="two rv">
+    <div><h3>Training and education</h3>
+      <dl>
+        <dt>Data Science Trainee, Wipro TalentNext</dt><dd>July to October 2025. Python, NumPy, Pandas, Matplotlib, Seaborn and core machine learning concepts.</dd>
+        <dt>B.Tech, Computer Science Engineering</dt><dd>Jai Narain College of Technology, Bhopal (RGPV), 2022 to 2026.</dd>
+      </dl>
+    </div>
+    <div><h3>Where I’m heading</h3>
+      <p style="margin:0;color:var(--mut)">Exploring multi-agent designs for regulated areas such as healthcare, where safety checks and clear audit trails matter more than clever demos.</p>
+    </div>
+  </div>
+</section>
+
+<section id="contact" style="border:0">
+  <h2 class="rv">Let’s work together</h2>
+  <p class="sub rv">Tell me the problem and what a good result looks like. I’ll reply with a plan and a price.</p>
+  <a class="big rv" href="mailto:mtoheed727@gmail.com">mtoheed727@gmail.com</a>
+  <p class="lk" style="margin-top:1.4rem"><a href="https://www.linkedin.com/in/mohd-toheed-985050275">LinkedIn</a><a href="https://github.com/toheed112">GitHub</a></p>
+</section>
+<footer>© 2026 Mohd Toheed Mehmood. Bhopal, India.</footer>
+</main>
+
+<script>
+(function(){
+  var m=document.getElementById('mq');m.insertAdjacentHTML('beforeend',m.innerHTML);
+  document.querySelectorAll('.svc').forEach(function(c){c.addEventListener('pointermove',function(e){var r=c.getBoundingClientRect();c.style.setProperty('--x',(e.clientX-r.left)+'px');c.style.setProperty('--y',(e.clientY-r.top)+'px')})});
+  var root=document.documentElement;
+  document.getElementById('theme').addEventListener('click',function(){
+    var d=root.getAttribute('data-theme')==='dark'||(!root.getAttribute('data-theme')&&matchMedia('(prefers-color-scheme: dark)').matches);
+    root.setAttribute('data-theme',d?'light':'dark');
+  });
+})();
+</script>
+</body>
+</html>
